@@ -8,22 +8,12 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
 
-    services:
-      # Label used to access the service container
-      demo:
-        # Docker Hub image
-        image: ayushishu/react-project
-        ports:
-          - 3000:3000
-          
 
     steps:
-      - name: docker ls
-        run: docker container ls
+
       - name: Get container IP
         run: |
-          docker-ip() {
-            docker inspect --format '{{ .NetworkSettings.IPAddress }}' demo
-          }
-          container_ip=$(docker-ip)
+          container_id=$(docker run -d -p 3000:3000 ayushishu/react-project )
+          echo "Container ID: $container_id"
+          container_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $container_id)
           echo "Container IP: $container_ip"
