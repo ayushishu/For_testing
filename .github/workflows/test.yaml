@@ -9,15 +9,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Build Docker image
-        run: docker build -t my-docker-image .
 
       - name: Run Docker container
         run: |
-          container_id=$(docker run -d -p 3000:3000 my-docker-image)
+          container_id=$(docker run -d -p 3000:3000 ayushishu/react-project)
           echo "Container ID: $container_id"
           sleep 600  # Sleep for 10 minutes (600 seconds)
           container_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $container_id)
