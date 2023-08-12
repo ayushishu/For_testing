@@ -7,6 +7,10 @@ on:
 jobs:
   container-test-job:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        timeout: [10]
 
 
     steps:
@@ -17,3 +21,8 @@ jobs:
           echo "Container ID: $container_id"
           container_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $container_id)
           echo "Container IP: $container_ip"
+      - name: Wait for specified time
+        run: sleep ${{ matrix.timeout }}m
+
+      - name: Clean up
+        run: docker stop $(docker ps -aq)
