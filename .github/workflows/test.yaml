@@ -5,7 +5,9 @@ on:
     branches: [main]
 
 jobs:
-  runs-on: ubuntu-latest
+  container-test-job:
+    runs-on: ubuntu-latest
+
     services:
       # Label used to access the service container
       demo:
@@ -18,7 +20,7 @@ jobs:
       - name: Get container IP
         run: |
           docker-ip() {
-            docker inspect --format '{{ .NetworkSettings.IPAddress }}' demo
+            docker inspect --format '{{ .NetworkSettings.IPAddress }}' ci_demo_1
           }
           container_ip=$(docker-ip)
           echo "Container IP: $container_ip"
