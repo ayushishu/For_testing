@@ -15,8 +15,11 @@ jobs:
         image: ayushishu/react-project
         ports:
           - 3000:3000
+          
 
     steps:
+      - name: docker ls
+        run: docker container ls
       - name: Get container IP
         run: |
           docker-ip() {
