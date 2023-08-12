@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  container-test-job:
+    runs-on: ubuntu-latest
+
+    container:
+      name: demo
+      image: ayushishu/react-project
+      ports:
+        - 3000
+
+    steps:
+      - name: Get container IP
+        run: |
+          docker-ip() {
+            docker inspect --format '{{ .NetworkSettings.IPAddress }}' demo
+          }
+          container_ip=$(docker-ip)
+          echo "Container IP: $container_ip"
