@@ -1,28 +1,27 @@
-name: CI
+name: Run Docker Container
 
 on:
   push:
     branches: [main]
 
 jobs:
-  container-test-job:
+  run-docker-container:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        timeout: [10]
-
 
     steps:
+      - name: Check out code
+        uses: actions/checkout@v2
 
-      - name: Get container IP
+      - name: Build Docker image
+        run: docker build -t my-docker-image .
+
+      - name: Run Docker container
         run: |
-          container_id=$(docker run -d -p 3000:3000 ayushishu/react-project )
+          container_id=$(docker run -d -p 3000:3000 my-docker-image)
           echo "Container ID: $container_id"
+          sleep 600  # Sleep for 10 minutes (600 seconds)
           container_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $container_id)
           echo "Container IP: $container_ip"
-      - name: Wait for specified time
-        run: sleep ${{ matrix.timeout }}m
 
       - name: Clean up
         run: docker stop $(docker ps -aq)
