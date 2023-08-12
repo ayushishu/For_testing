@@ -20,7 +20,7 @@ jobs:
       - name: Get container IP
         run: |
           docker-ip() {
-            docker inspect --format '{{ .NetworkSettings.IPAddress }}' ci_demo_1
+            docker inspect --format '{{ .NetworkSettings.IPAddress }}' demo
           }
           container_ip=$(docker-ip)
           echo "Container IP: $container_ip"
